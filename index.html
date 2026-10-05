@@ -1,0 +1,541 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>DNSWatch — DNS Change Monitoring &amp; Instant Alerts</title>
+  <meta name="description" content="Get instant email alerts when your DNS records change. Monitor A, AAAA, MX, TXT, CNAME records. $9/month for up to 10 domains." />
+  <meta property="og:title" content="DNSWatch — DNS Change Monitoring &amp; Instant Alerts" />
+  <meta property="og:description" content="Get instant email alerts when your DNS records change. Monitor A, AAAA, MX, TXT, CNAME records. $9/month for up to 10 domains." />
+  <meta property="og:url" content="https://lior-seats.github.io/dnswatch-waitlist/" />
+  <meta property="og:type" content="website" />
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="DNSWatch — DNS Change Monitoring &amp; Instant Alerts" />
+  <meta name="twitter:description" content="Get instant email alerts when your DNS records change. Monitor A, AAAA, MX, TXT, CNAME records. $9/month for up to 10 domains." />
+  <link rel="canonical" href="https://lior-seats.github.io/dnswatch-waitlist/" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      background: #0f172a;
+      color: #e2e8f0;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+      min-height: 100vh;
+    }
+
+    /* NAV */
+    nav {
+      background: #0f172a;
+      border-bottom: 1px solid #1e293b;
+      padding: 1rem 1.5rem;
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+    .nav-logo { font-size: 1.2rem; font-weight: 800; color: #6366f1; }
+    .nav-tagline { font-size: 0.82rem; color: #475569; }
+
+    /* HERO */
+    .hero {
+      text-align: center;
+      padding: 4rem 1.5rem 3rem;
+      max-width: 760px;
+      margin: 0 auto;
+    }
+    .badge {
+      display: inline-block;
+      background: rgba(99,102,241,0.15);
+      color: #818cf8;
+      border: 1px solid rgba(99,102,241,0.3);
+      border-radius: 100px;
+      padding: 0.35rem 1rem;
+      font-size: 0.82rem;
+      font-weight: 600;
+      letter-spacing: 0.3px;
+      margin-bottom: 1.5rem;
+    }
+    .hero h1 {
+      font-size: clamp(1.75rem, 5vw, 2.75rem);
+      font-weight: 800;
+      color: #f1f5f9;
+      line-height: 1.2;
+      margin-bottom: 1rem;
+      letter-spacing: -0.5px;
+    }
+    .hero h1 span { color: #6366f1; }
+    .hero-sub {
+      font-size: 1.05rem;
+      color: #94a3b8;
+      line-height: 1.7;
+      max-width: 580px;
+      margin: 0 auto 2.5rem;
+    }
+
+    /* FORM */
+    .waitlist-form {
+      background: #1e293b;
+      border: 1px solid #334155;
+      border-radius: 14px;
+      padding: 2rem;
+      max-width: 480px;
+      margin: 0 auto 1.5rem;
+    }
+    .form-label {
+      display: block;
+      font-size: 0.82rem;
+      font-weight: 600;
+      color: #94a3b8;
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+      margin-bottom: 0.6rem;
+    }
+    .form-input {
+      width: 100%;
+      background: #0f172a;
+      border: 1px solid #475569;
+      border-radius: 8px;
+      padding: 0.8rem 1rem;
+      font-size: 1rem;
+      color: #f1f5f9;
+      outline: none;
+      transition: border-color 0.2s;
+      margin-bottom: 0.85rem;
+    }
+    .form-input::placeholder { color: #475569; }
+    .form-input:focus { border-color: #6366f1; }
+    .btn-join {
+      width: 100%;
+      background: #6366f1;
+      color: #fff;
+      border: none;
+      border-radius: 8px;
+      padding: 0.9rem 1.5rem;
+      font-size: 1rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: background 0.2s, transform 0.1s;
+      letter-spacing: 0.2px;
+    }
+    .btn-join:hover { background: #4f46e5; }
+    .btn-join:active { transform: scale(0.99); }
+    .btn-join:disabled { background: #475569; cursor: not-allowed; }
+    .form-success {
+      display: none;
+      background: rgba(16,185,129,0.12);
+      border: 1px solid rgba(16,185,129,0.3);
+      border-radius: 8px;
+      padding: 1rem;
+      text-align: center;
+      color: #34d399;
+      font-weight: 600;
+      font-size: 0.95rem;
+      margin-top: 0.5rem;
+    }
+    .form-error {
+      display: none;
+      color: #f87171;
+      font-size: 0.85rem;
+      margin-top: 0.5rem;
+    }
+    .pricing-note {
+      text-align: center;
+      font-size: 0.82rem;
+      color: #64748b;
+      max-width: 480px;
+      margin: 0 auto;
+    }
+    .pricing-note strong { color: #94a3b8; }
+
+    /* FEATURES */
+    section { max-width: 900px; margin: 0 auto; padding: 0 1.5rem; }
+    .section-title {
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: #f1f5f9;
+      margin-bottom: 1.5rem;
+      text-align: center;
+    }
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 1rem;
+      margin-bottom: 4rem;
+    }
+    .feature-card {
+      background: #1e293b;
+      border: 1px solid #334155;
+      border-radius: 12px;
+      padding: 1.5rem;
+    }
+    .feature-icon { font-size: 1.75rem; margin-bottom: 0.75rem; }
+    .feature-title { font-size: 0.95rem; font-weight: 700; color: #f1f5f9; margin-bottom: 0.4rem; }
+    .feature-desc { font-size: 0.85rem; color: #94a3b8; line-height: 1.5; }
+
+    /* PAIN vs GAIN */
+    .pain-section {
+      margin-bottom: 4rem;
+    }
+    .pain-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.25rem;
+    }
+    @media (max-width: 600px) {
+      .pain-grid { grid-template-columns: 1fr; }
+    }
+    .pain-card {
+      background: #1e293b;
+      border: 1px solid #334155;
+      border-radius: 12px;
+      padding: 1.5rem;
+    }
+    .pain-card.bad { border-top: 3px solid #ef4444; }
+    .pain-card.good { border-top: 3px solid #10b981; }
+    .pain-card-title {
+      font-size: 0.85rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+      margin-bottom: 1rem;
+    }
+    .pain-card.bad .pain-card-title { color: #f87171; }
+    .pain-card.good .pain-card-title { color: #34d399; }
+    .pain-scenario {
+      display: flex;
+      flex-direction: column;
+      gap: 0.6rem;
+    }
+    .pain-step {
+      display: flex;
+      align-items: flex-start;
+      gap: 0.65rem;
+      font-size: 0.88rem;
+      color: #94a3b8;
+      line-height: 1.45;
+    }
+    .pain-step .icon { flex-shrink: 0; font-size: 1rem; }
+    .pain-step .bad-text { color: #fca5a5; }
+    .pain-step .good-text { color: #6ee7b7; }
+
+    /* PRICING */
+    .pricing-section {
+      margin-bottom: 4rem;
+    }
+    .pricing-card {
+      background: linear-gradient(135deg, #1e1b4b 0%, #1e293b 100%);
+      border: 1px solid #4f46e5;
+      border-radius: 16px;
+      padding: 2.5rem;
+      text-align: center;
+      max-width: 440px;
+      margin: 0 auto;
+    }
+    .price-amount {
+      font-size: 3.5rem;
+      font-weight: 800;
+      color: #f1f5f9;
+      line-height: 1;
+      margin-bottom: 0.25rem;
+    }
+    .price-amount sup { font-size: 1.5rem; vertical-align: super; }
+    .price-period { font-size: 0.9rem; color: #94a3b8; margin-bottom: 1.5rem; }
+    .price-features {
+      list-style: none;
+      margin-bottom: 2rem;
+      text-align: left;
+      display: inline-block;
+    }
+    .price-features li {
+      padding: 0.4rem 0;
+      font-size: 0.9rem;
+      color: #cbd5e1;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    .price-features li::before { content: '✓'; color: #6366f1; font-weight: 700; }
+    .price-cta {
+      font-size: 0.85rem;
+      color: #818cf8;
+      font-weight: 600;
+      background: rgba(99,102,241,0.1);
+      border-radius: 8px;
+      padding: 0.75rem 1.25rem;
+      display: inline-block;
+    }
+
+    /* WAITLIST BOTTOM */
+    .waitlist-bottom {
+      background: #1e293b;
+      border-top: 1px solid #334155;
+      padding: 3.5rem 1.5rem;
+      text-align: center;
+      margin-top: 2rem;
+    }
+    .waitlist-bottom h2 {
+      font-size: 1.75rem;
+      font-weight: 700;
+      color: #f1f5f9;
+      margin-bottom: 0.75rem;
+    }
+    .waitlist-bottom p {
+      color: #94a3b8;
+      font-size: 0.95rem;
+      margin-bottom: 1.75rem;
+    }
+    .waitlist-bottom-form {
+      display: flex;
+      gap: 0.75rem;
+      max-width: 420px;
+      margin: 0 auto 1rem;
+    }
+    .waitlist-bottom-form input {
+      flex: 1;
+      background: #0f172a;
+      border: 1px solid #475569;
+      border-radius: 8px;
+      padding: 0.75rem 1rem;
+      font-size: 0.95rem;
+      color: #f1f5f9;
+      outline: none;
+    }
+    .waitlist-bottom-form input:focus { border-color: #6366f1; }
+    .waitlist-bottom-form input::placeholder { color: #475569; }
+    .btn-join-sm {
+      background: #6366f1;
+      color: #fff;
+      border: none;
+      border-radius: 8px;
+      padding: 0.75rem 1.25rem;
+      font-size: 0.9rem;
+      font-weight: 700;
+      cursor: pointer;
+      white-space: nowrap;
+      transition: background 0.2s;
+    }
+    .btn-join-sm:hover { background: #4f46e5; }
+    .btn-join-sm:disabled { background: #475569; cursor: not-allowed; }
+    .bottom-success {
+      display: none;
+      color: #34d399;
+      font-weight: 600;
+      font-size: 0.95rem;
+      margin-bottom: 0.75rem;
+    }
+    .tool-link {
+      font-size: 0.9rem;
+      color: #6366f1;
+      text-decoration: none;
+    }
+    .tool-link:hover { text-decoration: underline; }
+
+    /* FOOTER */
+    footer {
+      text-align: center;
+      padding: 1.5rem;
+      color: #334155;
+      font-size: 0.8rem;
+      border-top: 1px solid #1e293b;
+    }
+    footer a { color: #475569; text-decoration: none; }
+    footer a:hover { color: #6366f1; }
+
+    @media (max-width: 500px) {
+      .waitlist-bottom-form { flex-direction: column; }
+    }
+  </style>
+</head>
+<body>
+
+  <nav>
+    <div class="nav-logo">🔍 DNSWatch</div>
+    <div class="nav-tagline">DNS Change Monitoring</div>
+  </nav>
+
+  <!-- HERO -->
+  <div class="hero">
+    <div class="badge">🔍 DNS Change Monitoring</div>
+    <h1>DNS changes break production.<br /><span>Be the first to know.</span></h1>
+    <p class="hero-sub">DNSWatch monitors your DNS records 24/7 and alerts you the instant anything changes — before your users notice.</p>
+
+    <div class="waitlist-form">
+      <label class="form-label" for="heroEmail">Get early access</label>
+      <input type="email" id="heroEmail" class="form-input" placeholder="you@company.com" autocomplete="email" />
+      <button class="btn-join" id="heroBtn" onclick="submitWaitlist('heroEmail', 'heroBtn', 'heroSuccess', 'heroError')">Join Waitlist →</button>
+      <div class="form-success" id="heroSuccess">✅ You're on the list! We'll be in touch soon.</div>
+      <div class="form-error" id="heroError"></div>
+    </div>
+    <p class="pricing-note">
+      <strong>$9/month</strong> · Monitor up to 10 domains · Real-time alerts · Early access pricing<br />
+      Lock in $9/mo forever as a founding customer.
+    </p>
+  </div>
+
+  <!-- FEATURES -->
+  <section>
+    <h2 class="section-title">Everything you need to stay ahead of DNS issues</h2>
+    <div class="features-grid">
+      <div class="feature-card">
+        <div class="feature-icon">⚡</div>
+        <div class="feature-title">Real-time change alerts</div>
+        <div class="feature-desc">Email + webhook notifications the moment any record changes — no delay.</div>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">🔍</div>
+        <div class="feature-title">All record types</div>
+        <div class="feature-desc">A, AAAA, MX, TXT, CNAME, NS — all monitored continuously, nothing missed.</div>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">🏢</div>
+        <div class="feature-title">Monitor up to 10 domains</div>
+        <div class="feature-desc">One dashboard for your whole infrastructure — production, staging, and subdomains.</div>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">📊</div>
+        <div class="feature-title">Change history</div>
+        <div class="feature-desc">See exactly what changed, when, and from what previous value — full audit trail.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PAIN vs GAIN -->
+  <section class="pain-section">
+    <h2 class="section-title">The difference DNSWatch makes</h2>
+    <div class="pain-grid">
+      <div class="pain-card bad">
+        <div class="pain-card-title">❌ Without DNSWatch</div>
+        <div class="pain-scenario">
+          <div class="pain-step">
+            <span class="icon">📧</span>
+            <span>MX record changed by someone on your team</span>
+          </div>
+          <div class="pain-step">
+            <span class="icon">📭</span>
+            <span class="bad-text">Emails start bouncing — customers can't reach you</span>
+          </div>
+          <div class="pain-step">
+            <span class="icon">😤</span>
+            <span>Support tickets pile up. Users complain on Twitter.</span>
+          </div>
+          <div class="pain-step">
+            <span class="icon">⏰</span>
+            <span class="bad-text">You find out 3 days later when the damage is done</span>
+          </div>
+        </div>
+      </div>
+      <div class="pain-card good">
+        <div class="pain-card-title">✅ With DNSWatch</div>
+        <div class="pain-scenario">
+          <div class="pain-step">
+            <span class="icon">📧</span>
+            <span>MX record changed by someone on your team</span>
+          </div>
+          <div class="pain-step">
+            <span class="icon">🔔</span>
+            <span class="good-text">Alert fires within minutes: "MX record changed on example.com"</span>
+          </div>
+          <div class="pain-step">
+            <span class="icon">🔧</span>
+            <span>You investigate immediately and revert the change</span>
+          </div>
+          <div class="pain-step">
+            <span class="icon">✅</span>
+            <span class="good-text">Zero customer impact — fixed before anyone noticed</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PRICING -->
+  <section class="pricing-section">
+    <h2 class="section-title">Simple, affordable pricing</h2>
+    <div class="pricing-card">
+      <div class="price-amount"><sup>$</sup>9</div>
+      <div class="price-period">per month · founding customer pricing</div>
+      <ul class="price-features">
+        <li>Monitor up to 10 domains</li>
+        <li>Real-time email alerts</li>
+        <li>Webhook integrations</li>
+        <li>All record types (A, AAAA, MX, TXT, CNAME, NS)</li>
+        <li>Full change history</li>
+        <li>Early access pricing — locked forever</li>
+      </ul>
+      <div class="price-cta">🔒 Lock in $9/mo forever as a founding customer</div>
+    </div>
+  </section>
+
+  <!-- WAITLIST BOTTOM -->
+  <div class="waitlist-bottom">
+    <h2>Don't get caught off guard.</h2>
+    <p>Join the waitlist and lock in founding-customer pricing before we launch.</p>
+    <div class="waitlist-bottom-form">
+      <input type="email" id="bottomEmail" placeholder="you@company.com" autocomplete="email" />
+      <button class="btn-join-sm" id="bottomBtn" onclick="submitWaitlist('bottomEmail', 'bottomBtn', 'bottomSuccess', 'bottomError')">Join Waitlist →</button>
+    </div>
+    <div class="bottom-success" id="bottomSuccess">✅ You're on the list! We'll be in touch soon.</div>
+    <div class="form-error" id="bottomError" style="text-align:center;"></div>
+    <br />
+    <a href="https://lior-seats.github.io/dns-checker/" class="tool-link">Check your current DNS records free →</a>
+  </div>
+
+  <footer>
+    &copy; 2026 DNSWatch &nbsp;|&nbsp;
+    <a href="https://lior-seats.github.io/dns-checker/">Free DNS Checker Tool</a>
+  </footer>
+
+  <script>
+    // Hit pixel
+    try { fetch('https://agent-control-plane-w3m9.onrender.com/api/hit?page=dnswatch-waitlist', { mode: 'no-cors' }); } catch(e) {}
+
+    async function submitWaitlist(inputId, btnId, successId, errorId) {
+      const email = document.getElementById(inputId).value.trim();
+      const btn = document.getElementById(btnId);
+      const successEl = document.getElementById(successId);
+      const errorEl = document.getElementById(errorId);
+
+      successEl.style.display = 'none';
+      errorEl.style.display = 'none';
+
+      if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+        errorEl.textContent = 'Please enter a valid email address.';
+        errorEl.style.display = 'block';
+        return;
+      }
+
+      btn.disabled = true;
+      btn.textContent = 'Joining…';
+
+      try {
+        const res = await fetch('https://agent-control-plane-w3m9.onrender.com/api/waitlist', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ email, source: 'dnswatch' })
+        });
+        if (res.ok || res.status === 409) {
+          successEl.style.display = 'block';
+          document.getElementById(inputId).value = '';
+        } else {
+          throw new Error(`HTTP ${res.status}`);
+        }
+      } catch(e) {
+        errorEl.textContent = 'Something went wrong — please try again.';
+        errorEl.style.display = 'block';
+      } finally {
+        btn.disabled = false;
+        btn.textContent = 'Join Waitlist →';
+      }
+    }
+
+    // Allow Enter key on email inputs
+    ['heroEmail', 'bottomEmail'].forEach(id => {
+      const el = document.getElementById(id);
+      if (!el) return;
+      el.addEventListener('keydown', e => {
+        if (e.key !== 'Enter') return;
+        if (id === 'heroEmail') submitWaitlist('heroEmail', 'heroBtn', 'heroSuccess', 'heroError');
+        else submitWaitlist('bottomEmail', 'bottomBtn', 'bottomSuccess', 'bottomError');
+      });
+    });
+  </script>
+</body>
+</html>
